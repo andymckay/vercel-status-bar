@@ -1,4 +1,3 @@
-const VERCEL_TOKEN = "B3NHyq3pSJPrk1B2omuBP1Hb";
 const request = require("request");
 const separator = Symbol("separator");
 
