@@ -92,7 +92,7 @@ function process(result) {
         });
       }
     }
-    if (project.link.type === "github") {
+    if (project.link?.type === "github") {
       submenu.push(separator);
       submenu.push({
         text: "Open GitHub",
