@@ -11,14 +11,19 @@ function process(result) {
     });
     rows.push(separator);
     rows.push({
-      text: "Vercel is operational",
+      text: "All systems operational",
       href: "https://www.vercel-status.com/",
     });
-  } else
+  } else {
     rows.push({
       text: "💔",
       dropdown: true,
     });
+    rows.push({
+      text: "Something is wrong",
+      href: "https://www.vercel-status.com/",
+    });
+  }
   xbar(rows);
 }
 

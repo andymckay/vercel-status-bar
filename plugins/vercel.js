@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 import { env, exit } from "node:process";
 let env_from_file = dotenv.config().parsed;
 let VERCEL_TOKEN = env_from_file?.VERCEL_TOKEN || env?.VERCEL_TOKEN;
-let ICON_TO_USE = env_from_file?.ICON === "dark" ? dark_icon : light_icon;
+let ICON_TO_USE = env_from_file?.VERCEL_ICON === "dark" ? dark_icon : light_icon;
 
 function showError(text) {
   let rows = [];
@@ -24,17 +24,6 @@ function showError(text) {
 
 if (!VERCEL_TOKEN) {
   showError("No API token found, see docs 👉");
-}
-
-// Vercel specific stuff.
-function getStatus(status) {
-  switch (status) {
-    case "READY":
-      return "💚";
-    case "BUILDING":
-      return "💭";
-  }
-  return "❓";
 }
 
 function getChecks(check) {
@@ -68,8 +57,7 @@ function process(result) {
   }
 
   for (let project of JSON.parse(result.body).projects) {
-    let statusEmoji = getStatus(project.latestDeployments[0].readyState);
-    let text = `${statusEmoji} ${project.name}`;
+    let text = `${project.name}`;
     let submenu = [];
     submenu.push({
       text: "Open dashboard",
