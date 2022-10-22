@@ -14,17 +14,35 @@ function process(result) {
       text: "All systems operational",
       href: "https://www.vercel-status.com/",
     });
-  } else {
+    xbar(rows);
+    return
+
+  }
+  if (data.status.indicator === "minor") {
     rows.push({
-      text: "💔",
-      dropdown: true,
+      text: "💛",
+      dropdown: false,
     });
+    rows.push(separator);
     rows.push({
-      text: "Something is wrong",
+      text: "Minor issue 👉",
       href: "https://www.vercel-status.com/",
     });
+    xbar(rows);
+    return;
   }
+
+  rows.push({
+    text: "💔",
+    dropdown: false,
+  });
+  rows.push(separator);
+  rows.push({
+    text: "Something is wrong",
+    href: "https://www.vercel-status.com/",
+  });
   xbar(rows);
+  return;
 }
 
 try {
