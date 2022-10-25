@@ -6,7 +6,9 @@ import { env, exit } from "node:process";
 import { stringify } from "node:querystring";
 let env_from_file = dotenv.config().parsed;
 let VERCEL_TOKEN = env_from_file?.VERCEL_TOKEN || env?.VERCEL_TOKEN;
-let ICON_TO_USE = env_from_file?.VERCEL_ICON === "dark" ? dark_icon : light_icon;
+let ICON_TO_USE =
+  env_from_file?.VERCEL_ICON === "dark" ? dark_icon : light_icon;
+let VERCEL_TEAM = env_from_file?.VERCEL_TEAM || env?.VERCEL_TEAM;
 
 function showError(text) {
   let rows = [];
@@ -52,8 +54,14 @@ function nicerCreatedAt(time) {
   return `${minutes} minutes ago`;
 }
 
-function process(result, user) {
-  let userData = JSON.parse(user.body);
+function getSlug(user, teams) {
+  if (VERCEL_TEAM) {
+    return teams[VERCEL_TEAM];
+  }
+  return user.username;
+}
+
+function process(result, user, teams) {
   let rows = [];
   rows.push({
     text: " ",
@@ -67,13 +75,13 @@ function process(result, user) {
 
   function capitalize(state) {
     if (typeof state !== "string") return "";
-    return state.charAt(0).toUpperCase() + state.slice(1).toLowerCase()
+    return state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
   }
 
   function showDeployment(deployment, submenu) {
     submenu.push({
-      text: `Created: ${nicerCreatedAt(deployment.createdAt)}`
-    })
+      text: `Created: ${nicerCreatedAt(deployment.createdAt)}`,
+    });
     let checkEmoji = getCheckEmoji(deployment.checksConclusion);
     submenu.push({
       text: `${checkEmoji} Checks: ${capitalize(deployment.checksConclusion)}`,
@@ -92,7 +100,7 @@ function process(result, user) {
     let submenu = [];
     submenu.push({
       text: "Open dashboard",
-      href: `https://vercel.com/${userData.user.username}/${project.name}`,
+      href: `https://vercel.com/${getSlug(user, teams)}/${project.name}`,
     });
     submenu.push(separator);
     for (let [name, target] of Object.entries(project.targets)) {
@@ -120,30 +128,60 @@ function process(result, user) {
       submenu: submenu,
     });
   }
+  if (VERCEL_TEAM) {
+    rows.push({
+      text: `Showing team: ${teams[VERCEL_TEAM]}`,
+    });
+  } else {
+    rows.push({
+      text: `Showing user: ${user.username}`,
+    });
+  }
   xbar(rows);
 }
 
 const headers = {
   Authorization: `Bearer ${VERCEL_TOKEN}`,
   "Content-Type": "application/json",
-}
+};
 
 const projectOptions = {
-  url: "https://api.vercel.com/v9/projects",
-  headers: headers
+  url: `https://api.vercel.com/v9/projects?teamId=${VERCEL_TEAM}`,
+  headers: headers,
 };
 
 const userOptions = {
   url: "https://api.vercel.com/v2/user",
-  headers: headers
+  headers: headers,
 };
 
+const teamOptions = {
+  url: "https://api.vercel.com/v2/teams",
+  headers: headers,
+};
+
+function processTeams(teams) {
+  let teamsBody = JSON.parse(teams.body);
+  for (let t of teamsBody.teams) {
+    teams[t.id] = t.slug;
+  }
+  return teams;
+}
+
+function processUser(user) {
+  return JSON.parse(user.body).user;
+}
+
 try {
-  const user = await got.get(userOptions);
-  const result = await got.get(projectOptions);
-  process(result, user);
+  const gotTeams = await got.get(teamOptions);
+  const teams = processTeams(gotTeams);
+  const gotUser = await got.get(userOptions);
+  const user = processUser(gotUser);
+  const gotResult = await got.get(projectOptions);
+  process(gotResult, user, teams);
 } catch (error) {
   if (error.response) {
+    console.log(error.response.body);
     showError(`Error got a ${error.response.statusCode}, see docs 👉`);
   }
   console.log(error);

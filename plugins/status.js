@@ -15,8 +15,7 @@ function process(result) {
       href: "https://www.vercel-status.com/",
     });
     xbar(rows);
-    return
-
+    return;
   }
   if (data.status.indicator === "minor") {
     rows.push({
