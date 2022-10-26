@@ -35,7 +35,7 @@ Configuration is done through environment variables. However because xbar could 
 Environment variables:
 * `VERCEL_TOKEN`: the token to authenticate requests with, get yours at [Vercel](https://vercel.com)
 * `VERCEL_ICON`: either `light` or `dark` the icon to show in the menu bar. It's really hard to detect in xbar which one to show so pick the one that works best for you.
-* `VERCEL_TEAM`: the `id` of the team you'd like to view with 
+* `VERCEL_TEAM`: the `id` of the team you'd like to view. You can find the [id of your team by following these docs](https://vercel.com/docs/rest-api#introduction/api-basics).
 
 ### Todo
 
