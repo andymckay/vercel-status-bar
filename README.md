@@ -35,3 +35,9 @@ Configuration is done through environment variables. However because xbar could 
 Environment variables:
 * `VERCEL_TOKEN`: the token to authenticate requests with, get yours at [Vercel](https://vercel.com)
 * `VERCEL_ICON`: either `light` or `dark` the icon to show in the menu bar. It's really hard to detect in xbar which one to show so pick the one that works best for you.
+* `VERCEL_TEAM`: the `id` of the team you'd like to view with 
+
+### Todo
+
+* Figure out if the information is useful or right.
+* There currently isn't any pagination, so it's going to cut off for large amounts of projects.
