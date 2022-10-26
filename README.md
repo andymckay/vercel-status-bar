@@ -12,10 +12,9 @@ The [Vercel status](https://www.vercel-status.com):
 
 <img width="225" alt="Screen Shot 2022-10-21 at 3 50 06 PM" src="https://user-images.githubusercontent.com/74699/197300588-8e61114f-d903-4e55-ac62-af53392fa61e.png">
 
-Vercel projects and deployments:
+Vercel [projects and deployments](https://vercel.com/dashboard):
 
-<img width="395" alt="Screen Shot 2022-10-21 at 3 49 57 PM" src="https://user-images.githubusercontent.com/74699/197300599-a06bc310-0cd8-4179-aca6-7cc9e4cdbf1a.png">
-
+<img width="439" alt="Screen Shot 2022-10-26 at 1 50 41 PM" src="https://user-images.githubusercontent.com/74699/198135053-5d20e869-4df2-4eff-8f93-ce49033d689e.png">
 
 ### Installing
 
