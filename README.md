@@ -40,4 +40,5 @@ Environment variables:
 ### Todo
 
 * Figure out if the information is useful or right.
+* Handle teams nicer, use the slug? Allow easier flipping between teams?
 * There currently isn't any pagination, so it's going to cut off for large amounts of projects.
